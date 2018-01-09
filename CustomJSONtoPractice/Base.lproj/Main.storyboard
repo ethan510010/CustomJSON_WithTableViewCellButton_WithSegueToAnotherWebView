@@ -32,7 +32,6 @@
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwZ-6Y-Leb">
                                                     <rect key="frame" x="137" y="11" width="100" height="120"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Button"/>
                                                     <connections>
                                                         <action selector="didTapButton:" destination="drO-nK-03a" eventType="touchUpInside" id="D1b-Hf-ewz"/>
                                                     </connections>

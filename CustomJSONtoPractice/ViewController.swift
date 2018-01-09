@@ -9,11 +9,13 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TableViewCellButtonTapped {
-    func buttonBeTapped(index: IndexPath) {                                           /*因為index已經被存成tableView的indexPath*/
+    
+    //實作自己定義的protocol
+    func buttonBeTapped(index: IndexPath) {                                   /*因為index已經被存成tableView的indexPath，看下面的方法cellForRowAt*/
         performSegue(withIdentifier: "connectWebSegue", sender: websitesData?.websites[index.row].webAddress)
     }
     
-    //實作自己定義的protocol
+    
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -27,10 +29,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    //變成用列去讀取
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        performSegue(withIdentifier: "connectWebSegue", sender: websitesData?.websites[indexPath.row].webAddress)
-//    }
+  
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let numberOfRows = websitesData?.websites.count{
@@ -47,6 +46,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //把tableView中的indexPath存進cell中的index屬性．這步很重要
         cell.index = indexPath
         cell.delegate = self
+        
+        // 圖片部份的處理
+        if let imageAddress = websitesData?.websites[indexPath.row].image{
+            if let imageURL = URL(string: imageAddress){
+                DispatchQueue.global().async {
+                    let data = try? Data(contentsOf: imageURL)
+                    if let downloadedImageData = data{
+                        let downloadedImage = UIImage(data: downloadedImageData)
+                        DispatchQueue.main.async {
+                            cell.cellImageView.image = downloadedImage
+                        }
+                    }
+                }
+            }
+        }
         return cell
     }
     
@@ -63,6 +77,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         downloadedJSON()
         myTableview.delegate = self
         myTableview.dataSource = self
+        
+        //處理圖片的部分
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -89,7 +106,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         let decoder = JSONDecoder()
                         let downloadedWebsites = try decoder.decode(JSONData.self, from: downloadedData)
                         print(downloadedWebsites.websites.count)
-//                        print(downloadedWebsites.websites[0].image)
+                        //                        print(downloadedWebsites.websites[0].image)
                         print(downloadedWebsites.websites[0].title)
                         self.websitesData = downloadedWebsites
                         

@@ -25,6 +25,7 @@ class WebViewController: UIViewController {
         //加到畫面上
         self.view.addSubview(webView)
         
+        //載入網址
         if let url = URL(string:webAddressFromTableView!){
             let myRequest = URLRequest(url: url)
             webView.loadRequest(myRequest)
